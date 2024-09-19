@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CROP_PREDICTOR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <style type = "text/css">
+
+        html {
+            background-size: cover;
+            background: url("{{ url_for('static', filename='back_image.jpg') }}")
+
+            no-repeat center center fixed ;
+            -webkit-background-size: cover;
+        }
+        body{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+        }
+       
+        h2 {
+            font-size: 170%;
+            font-weight: 600;
+            background-image: linear-gradient(to left, #17131f, #3f3d40);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+        #top{
+            background-color: rgb(229, 241, 240);
+            text-align: center;
+            padding: 10px;
+            font-size: 24px;
+            width : 100%;
+            height: 70px;
+            margin-bottom: 30px;
+            
+        }
+
+        #top2{
+            background-image: linear-gradient(to left, #17131f, #3f3d40);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            text-align: center;
+            padding: 10px;
+            font-size: 24px;
+            height: 45px;
+        ;
+        }
+     
+        .field{
+            margin-top: 40px;
+            margin-left: 130px;
+           
+            
+            
+        }
+        #predict_button{
+           
+            padding: 7px;
+            background-color: rgba(72, 19, 9, 0.689);
+            color: #fff;
+            border:1px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.2s ease;
+            width: 120px;
+            margin-left: 50%;
+            margin-top: 50px;
+            margin-right: 50px;
+            font-size: 130%;
+            
+
+        }
+
+        label{
+            background-image: linear-gradient(to left, #f7f7f5, #b8b6b3);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            font-weight: bold;
+            font-size: 130%;
+            
+            font-family: "Lucida Console", "Courier New", monospace !important;
+            
+            
+        }
+        #predict_button:hover{
+            background-color: #391402ec;
+            text-decoration: solid;
+            text-decoration: underline;
+        }
+        input{
+           
+            width: 200px;
+            border:1px;
+            display: block;
+            border-radius: 3px;
+            background-color: ghostwhite;
+            height: 30px;
+        }
+        .inbox{
+            position: relative;
+            float: left;
+            margin-left: 15%;
+        }
+        #result{
+            
+            font-size: 150%;
+            text-decoration: solid;
+            color : black ;
+            border:1px;
+            border-radius: 3px;
+        }
+        #textarea{
+            
+            margin-top: 20px;
+            margin-left: -270px;
+            border:1px;
+            border-radius: 3px;
+            background-color: ghostwhite;
+            resize: none;
+            width: 500px;
+            text-align: center;
+
+        }
+        h3{
+            margin-top: -15px;
+        }
+        #main{
+            margin-left: 65px;
+        }
+
+
+    </style>
+
+</head>
+<body>
+        <div id = top>
+            <h2>CROP_PREDICTOR</h2>
+        </div>
+    <div id = top2>
+        <h3>
+            Fill the fiels to get the best Crop Predicted...
+        </h3>
+    </div>
+    <div id  = "main" >
+        <form action="/predict" id = form_id  method="post">
+            <div class = inbox>
+                <div class = field>
+                    <label for="nitrogen">Nitrogen:</label>
+                    <input name = "nitrogen" type="number" id="nitrogen" max ="150" min ="0" placeholder="range(0,150)" required step="0" class="form-control" >
+                </div>
+
+                <div class = field>
+                    <label for="phosphorus">Phosphorus:</label>
+                    <input name = "phosphorus" type="number" id="phosphorus" max ="150" min ="0" placeholder="range(0,150)" required step="0" class="form-control">
+                </div>
+
+                <div class = field>
+                    <label for="potassium">Potassium:</label>
+                    <input name = "potassium" type="number" id="potassium" max="210" min="0" placeholder="range(0,210)" required step="0" class="form-control">
+                </div>
+
+                <div id = unique class = field>
+                    <label for="ph">Ph:</label>
+                    <input name = "ph" type="number" id="ph" max ="10" min = "0" placeholder="range(0,10)" required step="0" class="form-control">
+                </div>
+
+            </div>
+
+            <div class = inbox>
+
+                <div class = field>
+                    <label for="temperature">Temperature:</label>
+                    <input name = "temperature" type="number" id="temperature"  max ="50" min="5" placeholder="range(0,50)" required step="0" class="form-control">
+                </div>
+
+                <div class = field>
+                    <label for="humidity">Humidity:</label>
+                    <input name = "humidity" type="number" id="humidity" max ="100" min = "0" placeholder="range(0,100)" required step="0" class="form-control">
+                </div>
+
+                <div class = field>
+                    <label for="rainfall">Rainfall:</label>
+                    <input name = "rainfall" type="number" id="rainfall" max="300" min="0" placeholder="range(0,300)mm" required step="0" class="form-control">
+                </div>
+
+                <div >
+                    <button id="predict_button"  type="submit" class="form-control">Predict</button>
+                </div>
+                {% if result %}
+
+            <div id="result" >
+                <textarea id="textarea" >{{ result }}</textarea>
+
+            </div>
+
+    {% endif %}
+
+            </div>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</body>
+</html>
